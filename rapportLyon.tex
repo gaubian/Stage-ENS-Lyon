@@ -1,0 +1,325 @@
+% Classe de document.
+\documentclass[a4paper]{article}
+
+
+%%% ENCODAGE ET LANGUES %%%
+% Encodage de l'entrée.
+\usepackage[utf8]{inputenc}
+
+% Encodage de la police.
+\usepackage[T1]{fontenc}
+
+% Langues à charger. 
+% \usepackage[francais]{babel}
+
+
+%%% PAQUETS POUR LES MATHEMATIQUES %%%
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+
+%%% AUTRES PAQUETS %%%
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+
+\newtheorem{theorem}{Théorème}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemme}
+\theoremstyle{definition}
+\newtheorem{definition}{Définition}[section]
+\theoremstyle{remark}
+\newtheorem{remark}{Remarque}[section]
+\newtheorem{example}{Exemple}[section]
+\newtheorem{conjecture}{Conjecture}[section]
+
+
+\newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
+\newcommand{\tab}[1]{\hspace{.2\textwidth}\rlap{#1}}
+
+
+\title{Majoration de la décomposition minimale d'un graphe régulier}
+\author{AUBIAN Guillaume}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Voici le rapport de mon stage effectué à l'École Normale Supérieure de Lyon, dont l'objectif était de majorer la taille
+de la décomposition minimale d'un graphe k-régulier en chemins disjoints, sous la direction de
+Stéphan Thomassé
+\end{abstract}
+
+\part{Préambule}
+
+\paragraph{}
+
+\section{Encadrement au LIP}
+Il s'agit du Laboratoire de l'Informatique du Parallélisme, situé au centre de Lyon. C'est le laboratoire d'informatique de l'École Normale 
+Supérieure de Lyon, et la plupart des chercheurs y enseignent. J'étais dans l'équipe MC2 - pour Modèles de calcul, Complexité, Combinatoire -
+qui s'intéresse de manière générale à la théorie de la complexité, à 
+l'algorithmique sur les structures discrètes, et à la combinatoire de 
+façon plus générale.
+
+
+\paragraph{}
+Le chercheur qui m'a encadré était Stéphan Thomassé, dont le domaine
+de recherche est plutôt la théorie des graphes, même si j'ai aussi
+beaucoup travaillé et communiqué avec d'autres chercheurs ou doctorants 
+que je remercie chaleureusement , parmi lesquels Matthieu Rosenfeld, Aurélie Lagoutte et Éric Thierry.
+
+
+\section{Le problème étudié}
+
+\paragraph{}
+Le problème que m'a proposé Stéphan Thomassé concerne donc la théorie 
+des graphes, et possède l'énorme avantage d'être très facile à 
+comprendre, ce qui m'a permis de m'y attaquer directement.
+
+
+\paragraph{}
+Tout d'abord, nous allons donner quelques précisions, notamment sur le vocabulaire spécifique.
+
+
+\paragraph{}
+Déjà, nous ne nous intéresserons qu'à des graphes simples non-orientés, i.e. avec au plus une arête entre chaque paire de sommets et aucune arête
+d'un sommet vers lui-même. Un tel graphe est dit k-régulier si tous ses
+sommets sont de degré k, i.e. ont k voisins.
+
+
+\includegraphics{graphExample3.png}
+
+
+\paragraph{}
+Pour un tel graphe G, on nomme décomposition en chemins disjoints de G  un ensemble C de chemins de G tel que l'ensemble des sommets des chemins 
+de C partitionne l'ensemble des sommets de G. On note
+$\mu$(G)=min{|C|, C est une décomposition en chemins de G}.
+
+\includegraphics{graphExample4.png}
+
+
+\paragraph{}
+La conjecture à démontrer est la suivante:
+\begin{conjecture}
+Si G est un graphe k-régulier à n sommets, $\mu(G) \leq \frac{n}{k+1}$
+\end{conjecture}
+C'est Cognont et Martin qui semblent l'avoir établie, en 2009 dans INSERER LE PAPIER CORRESPONDANT.
+
+
+\paragraph{}
+En 2014, R. Ravi a trouvé une $1 + O(\frac{1}{k})$-approximation en
+temps polynomial ( et même linéaire ) du problème du voyageur du 
+commerce dans le cas des graphes k-réguliers, à condition que cette 
+conjecture soit vérifiée. Plus exactement, si la conjecture est vraie
+pour une certaine valeur de k et de n, alors on a un algorithme en
+temps linéaire d'approximation du problème du voyageur pour les graphes
+k-réguliers à n sommets. C'est remarquable, vu que le problème du 
+voyageur du commerce est NP-complet, même en le restreignant aux graphes
+réguliers.
+
+
+\paragraph{}
+Quelques semaines avant le début de mon stage, Paul Seymour a fait
+remarquer en conférence que dans le cas de graphes denses ( typiquement 
+$k = \epsilon n$ ), cela donnait une $1 + O(\frac{1}{\epsilon n})$-approximation, et que ça semblait être un premier angle d'attaque 
+possible. Mon maitre de stage s'étant rendu compte que le problème 
+était beaucoup plus difficile que prévu et que c'était le plus 
+intéressant, nous avons décidé de nous attaquer en priorité aux
+graphes denses.
+
+\paragraph{}
+Notre plus grand résultat a été de le démontrer pour $k \geq \frac{n}{3}$, même si nous avons pu aborder plusieurs autres stratégies ( avec une
+décomposition en anse, avec un arbre couvrant, avec une lollipop, le 
+maximum ou minimum lexicographique ), qui n'ont malheureusement pas 
+abouti, mais pourraient être approfondies.
+
+\part{Les résultats obtenus}
+
+\section{Les résultats directs}
+
+\paragraph{}
+Tout d'abord, on peut énoncer un certain nombre de résultats directs.
+
+
+\paragraph{}
+Dans un premier temps, on peut remarquer que la conjecture est immédiate si G admet un chemin hamiltonien: en effet, on a alors $\mu(G)=1$, ce qui vérifie forcément la conjecture vu que $k+1 \leq n$.
+
+
+\paragraph{}
+Or d'après le théorème de Dirac:
+\begin{theorem}
+Si le degré minimal d'un graphe G à n noeuds est supérieur ou égal à
+$\frac{n}{2}$, alors G est hamiltonien
+\end{theorem}
+
+
+Donc, si $k \geq \frac{n}{2}$, la conjecture est vérifiée. À fortiori, la
+conjecture est vérifiée sur les graphes complets ( vu que $k = n-1 \geq \frac{n}{2}$ ).
+
+
+\paragraph{}
+De plus, il est important de voir qu'on peut se limiter aux graphes connexes. En effet, si on peut partager un graphe G en deux composantes
+$G_{0}$ et $G_{1}$ telles qu'il n'y ait aucune arête entre $G_{0}$ et $G_{1}$. On remarque que tout chemin de G est soit dans $G_{0}$, soit dans $G_{1}$.
+Donc $\mu(G) \leq \mu(G_{0}) + \mu(G_{1})$. On a donc notre relation de
+récurrence, et il suffit de résoudre le cas initial, qui est celui des graphes connexes.
+
+
+\paragraph{}
+En s'inspirant de ceci, il est évident que la conjecture est «sharp», puisqu'il suffit de considérer l'union de $\frac{n}{k+1}$ graphes complets à k sommets: chaque composante connexe possède un chemin 
+hamiltonien d'après le théorème de Dirac, et donc il $\mu(G)=\frac{n}{k+1}$.
+
+
+\includegraphics{graphExample5.png}
+
+
+\paragraph{}
+Que se passe-t'il pour des petites valeurs de k? On se restreint comme décrit plus haut à des graphes connexes.
+
+
+\paragraph{}
+Si k=0, alors le graphe est réduit à un sommet, i.e $\mu(G)=1=\frac{1}{0+1}=\frac{n}{k+1}$
+
+
+\paragraph{}
+Si k=1, le graphe n'est constitué que de deux sommets reliés par une arête, et donc possède un chemin hamiltonien, i.e. $\mu(G)=\frac{2}{1+1}=\frac{n}{k+1}$.
+
+
+\paragraph{}
+Si k=2, G est réduit à un cycle, i.e. $\mu(G)=1 \leq \frac{n}{3}$ car $n \geq k+1 = 3$.
+
+
+\paragraph{}
+Il y a aussi des preuves pour k=3, 4 et 5 dans le papier de Cognont et
+Martin qui présente initalement la conjecture, mais on les redémontre facilement avec notre méthode du maximum lexicographique.
+
+\section{La méthode de l'arbre couvrant}
+
+\paragraph{}
+Nous avons tout d'abord découvert deux théorèmes qui nous semblaient prometteurs pour la suite.
+
+\paragraph{}
+On notera $nb_{leaves}(T)$ le nombre de feuilles d'un arbre $T$. Le premier des deux théorèmes stipule:
+\begin{theorem}
+Soit $ST$ un arbre couvrant d'un graphe connexe G, alors $\mu(G) \leq nb_{leaves}(ST)$.
+\end{theorem}
+
+\begin{proof}
+Il est évident que $\mu(G) \leq \mu(ST)$, vu qu'un chemin de $ST$ est un
+chemin de G.
+
+\paragraph{}
+On va alors noter $PW(T)$ l'ensemble des chemins pointés d'un arbre $T$ que l'on définit par récurrence de la manière ainsi:
+
+\paragraph{}
+Si T est réduit à un sommet $r$ (qui est aussi sa racine), et en notant c le chemin réduit à $r$, $PW(T) = {c}$. On remarque que la racine de T (qui n'est autre que $r$), est à l'extrémité d'un chemin de $PW(T)$.
+
+\paragraph{}
+Sinon, si T est réduit à une racine $r$ avec $s$ fils $T_{1}, T_{2} ... T_{s}$. On choisit $c$ le chemin de $PW(T_{1})$ tel que la racine de $T_{1}$ est à l'extrémité de $c$. On définit alors $PW(T)$ comme étant l'union des $PW(T_{i})$ (pour $i$ allant de $1$ à $s$), si ce n'est qu'on rajoute $r$ à l'extrémité de $c$. On remarque alors qu'un des chemins de $PW(T)$ a pour extrémité la racine de $T$.
+
+\paragraph{}
+On démontre facilement par induction structurelle que $|PW(T)|= nb_{leaves}(T)$.
+
+
+\paragraph{}
+Et comme $PW(T)$ est un cas particulier de décomposition en chemins disjoints, $\mu(ST) \leq |PW(T)|$.
+
+
+\paragraph{}
+Donc $\mu(G) \leq \mu(ST) \leq |PW(T)| = nb_{leaves}(T)$
+\end{proof}
+
+
+\paragraph{}
+On aimerait alors pouvoir démontrer qu'un graphe $G$ k-régulier à n noeuds admet toujours $O(\frac{n}{k})$ feuilles. Et le théorème 2 nous
+permet de montrer que si notre conjecture est vraie, c'est le cas:
+\begin{theorem}
+Soit $G$ un graphe connexe, alors:
+
+$\exists ST$ un arbre couvrant de G, $nb_{leaves}(ST)\leq 2\mu(G)$.
+\end{theorem}
+
+\begin{proof}
+Soit $G$ un graphe connexe. On note $W= \{ w_{1};w_{2};...;w_{\mu(G)} \}$ une décomposition minimale de $G$ en chemins disjoints.
+
+\paragraph{}
+On note $G_{folded}$ le graphe replié de $G$, i.e. les sommets de $G_{folded}$ sont en bijection avec les chemins de $W$ et il y a une arête entre deux sommets de $G_{folded}$ si et seulement si il y a une arête
+entre les deux sommets chemins correspondants de $W$.
+
+\paragraph{}
+$G$ étant connexe, et par construction de $G_{folded}$, il est connexe 
+lui-aussi. On considère alors $ST_{folded}$, un arbre couvrant de $G_{folded}$. En «dépliant» $ST_{folded}$, on obtient un arbre couvrant $ST$ de $G$ (ceci se voit aisément, mais se démontre en remarquant que $ST_{folded}$ possède $\mu(G)-1$ arêtes, et que les chemins de $W$ utilisent $n - \mu(G)$ arêtes. Donc $ST$ utilise $n - \mu(G) + \mu(G)-1 = n-1$ arêtes. Comme $W$ partitionne les sommets de $G$, $ST$ est un arbre couvrant de $G$).
+\end{proof}
+
+Donc:
+
+$\forall G, \exists ST,$ arbre couvrant de $G$, $ \mu(G) \leq nb_{leaves}(ST) \leq 2\mu(G)$
+
+\paragraph{}
+Il est à noter que ceci ne se restreint pas qu'aux graphes réguliers.
+
+\includegraphics{graphExample6.png}
+
+\paragraph{}
+On doit alors démontrer que les graphes k-réguliers à n noeuds admettent
+un arbre couvrant à $O(n/k)$ feuilles. On peut alors partir d'un arbre
+couvrant avec un nombre minimal de feuilles, et montrer qu'il a forcément moins de $\frac{n}{k+1}$ feuilles, par exemple par l'absurde 
+avec le théorème suivant.
+
+\begin{theorem}
+Soit $G$ un graphe connexe k-régulier, et $ST_{min}$ un arbre couvrant 
+qui minimise $nb_{leaves}(ST_{min})$. Si $nb_{leaves} > \frac{n}{k+1}$,
+alors deux feuilles de $ST_{min}$ ont un voisin commun dans $G$
+\end{theorem}
+\begin{proof}
+Si, à chaque feuille, on associe ses $k$ voisins et elle-même - i.e. $k+1$ éléments - alors comme il y a plus de $\frac{n}{k+1}$ feuilles et $n$
+sommets, on obtient presque notre résultat en utilisant le théorème des
+tiroirs. En effet, il reste encore le cas de figure où deux feuilles sont
+voisines: ceci est impossible, car si c'était le cas, on pourrait 
+rajouter l'arête entre les deux, et supprimer une arête adjacente à un
+noeud du cycle nouvellement créé de degré $\geq 3$ dans $ST_{min}$. 
+Ainsi, on a supprimé deux feuilles pour en créer une, ce qui contredit
+l'argument de minimalité.
+\end{proof}
+
+\paragraph{}
+Dans la pratique, nous ne sommes pas arrivé à conclure malgré ce théorème. Néanmoins, on aimerait bien garder une structure qui permette
+de conclure avec un théorème semblable.
+
+\section{La méthode du maximum lexicographique}
+
+\paragraph{}
+C'est le cas avec cet angle d'attaque: ici, on considère une partition minimale de $G$ en chemins disjoints $W = \{w_{1};w_{2};...;w_{\mu(G)}\}$ (on demande donc que $|W|$ soit minimal), qui soit un maximum 
+lexicographique parmi les partitions minimales en chemins disjoints de $G$. Pour rappel, cela signifie que pour toute partition minimale de $G$ 
+en chemins disjoints $W'=\{w'_{1};w'_{2};...;w'_{\mu(G)}\}$ différente de $W$, $w_{1} > w'_{1}$ ou ($w_{1}=w'_{1}$ et $w_{2} > w'_{2}$) ou ($w_{1}=w'_{1}$ et $w_{2} = w'_{2}$ et $w_{3} > w'_{3}$) etc...
+
+i.e. $\exists i \in [1;...;\mu(G)] \forall i' < i, (w_{i} > w'_{i}$ et $w_{i'}=w'_{i'})$
+
+\begin{theorem}
+Soit $x$ un sommet à l'extrémité d'un $w_{i}$, et $y$ un voisin de $x$
+situé sur $w_{j}$, pour $i \neq j$. Alors, $y$ est à une distance supérieure ou égale à $w_{i}$ d'une extrémité de $w_{j}$.
+\end{theorem}
+
+\begin{proof}
+Par l'absurde, on pourrait rajouter l'arête entre $x$ et $y$, et
+supprimer l'arête partant de $y$ vers l'extrémité de $w_{j}$ la plus
+proche. On obtient alors une contradiction puisque le nouveau chemin obtenu est plus grand que $w_{i}$ et que $w_{j}$.
+\end{proof}
+
+
+\paragraph{}
+A fortiori, cela implique que les extrémités des $w_{i}$ ont tous leurs
+voisins situés sur des $w_{i'}$ pour $i' \leq i$, comme on peut le voir 
+sur la figure suivante:
+
+\includegraphics{graphExample7.png}
+
+\paragraph{}
+Une autre conséquence est que si une extrémité $x$ de $w_{i}$ a un voisin sur $w_{j}$ pour $i \neq j$, alors $|w_{j}| \geq 2|w_{i}|$. On 
+voudrait alors faire une chaîne $w_{i_{0}} \rightarrow w_{i_{1}} \rightarrow w_{i_{2}} \rightarrow ...$ tel que chaque élément soit deux 
+fois plus grand que le précédent. Malheureusement, le cas de figure 
+suivant semble être une barrière infranchissable:
+
+\includegraphics{graphExample8.png}
+\end{document}
