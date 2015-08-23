@@ -18,7 +18,6 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 
-
 %%% AUTRES PAQUETS %%%
 \usepackage{graphicx}
 \usepackage{hyperref}
@@ -39,7 +38,7 @@
 \newcommand{\tab}[1]{\hspace{.2\textwidth}\rlap{#1}}
 
 
-\title{Majoration de la décomposition minimale d'un graphe régulier}
+\title{Majoration de la taille minimale d'une décomposition d'un graphe régulier}
 \author{AUBIAN Guillaume}
 
 \begin{document}
@@ -47,9 +46,9 @@
 \maketitle
 
 \begin{abstract}
-Voici le rapport de mon stage effectué à l'École Normale Supérieure de Lyon, dont l'objectif était de majorer la taille
-de la décomposition minimale d'un graphe k-régulier en chemins disjoints, sous la direction de
-Stéphan Thomassé
+Voici le rapport de mon stage effectué à l'École Normale Supérieure de Lyon sous la direction de
+Stéphan Thomassé. L'objectif de ce stage était de majorer la taille
+de la décomposition minimale d'un graphe k-régulier en chemins disjoints.
 \end{abstract}
 
 \part{Préambule}
@@ -59,7 +58,7 @@ Stéphan Thomassé
 \section{Encadrement au LIP}
 Il s'agit du Laboratoire de l'Informatique du Parallélisme, situé au centre de Lyon. C'est le laboratoire d'informatique de l'École Normale 
 Supérieure de Lyon, et la plupart des chercheurs y enseignent. J'étais dans l'équipe MC2 - pour Modèles de calcul, Complexité, Combinatoire -
-qui s'intéresse de manière générale à la théorie de la complexité, à 
+qui s'intéresse à la théorie de la complexité, à 
 l'algorithmique sur les structures discrètes, et à la combinatoire de 
 façon plus générale.
 
@@ -105,11 +104,11 @@ La conjecture à démontrer est la suivante:
 \begin{conjecture}
 Si G est un graphe k-régulier à n sommets, $\mu(G) \leq \frac{n}{k+1}$
 \end{conjecture}
-C'est Cognont et Martin qui semblent l'avoir établie, en 2009 dans INSERER LE PAPIER CORRESPONDANT.
+C'est Magnant et Martin qui semblent l'avoir établie, en 2009 dans \cite{MagnantMartin}.
 
 
 \paragraph{}
-En 2014, R. Ravi a trouvé une $1 + O(\frac{1}{k})$-approximation en
+En 2014, dans \cite{FeigeRaviSingh}, R. Ravi a trouvé une $1 + O(\frac{1}{k})$-approximation en
 temps polynomial ( et même linéaire ) du problème du voyageur du 
 commerce dans le cas des graphes k-réguliers, à condition que cette 
 conjecture soit vérifiée. Plus exactement, si la conjecture est vraie
@@ -168,7 +167,7 @@ récurrence, et il suffit de résoudre le cas initial, qui est celui des graphes
 
 \paragraph{}
 En s'inspirant de ceci, il est évident que la conjecture est «sharp», puisqu'il suffit de considérer l'union de $\frac{n}{k+1}$ graphes complets à k sommets: chaque composante connexe possède un chemin 
-hamiltonien d'après le théorème de Dirac, et donc il $\mu(G)=\frac{n}{k+1}$.
+hamiltonien d'après le théorème de Dirac, et donc $\mu(G)=\frac{n}{k+1}$.
 
 
 \includegraphics{graphExample5.png}
@@ -191,7 +190,7 @@ Si k=2, G est réduit à un cycle, i.e. $\mu(G)=1 \leq \frac{n}{3}$ car $n \geq 
 
 
 \paragraph{}
-Il y a aussi des preuves pour k=3, 4 et 5 dans le papier de Cognont et
+Il y a aussi des preuves pour k=3, 4 et 5 dans le papier de Magnant et
 Martin qui présente initalement la conjecture, mais on les redémontre facilement avec notre méthode du maximum lexicographique.
 
 \section{La méthode de l'arbre couvrant}
@@ -322,4 +321,145 @@ fois plus grand que le précédent. Malheureusement, le cas de figure
 suivant semble être une barrière infranchissable:
 
 \includegraphics{graphExample8.png}
+
+\paragraph{}
+Supposons qu'on ne puisse pas trouver deux extrémités voisines (par exemple si les $k$ voisins de chaque sommet isolé sont vers le milieu du 
+grand chemin), alors on semble bloqué avec $log(n)$ chemins, alors que si $k$ est très grand (par exemple $k \geq \frac{n}{3}$), il faudrait trouver un nombre «constant» de chemins (2 ou 3 par exemple)
+
+\paragraph{}
+Dans le cas présent, une solution est de remarquer que, comme $k$ est 
+très grand, alors on pourra forcément trouver dans le long chemin deux 
+sommets séparés par un seul sommet $x$ et ayant un voisin commun parmi les sommets isolés: auquel cas, on peut échanger ce voisin commun avec $x$. Ainsi, cela nous permet d'augmenter le nombre de sommets isolés 
+éventuels. En continuant ainsi tant que possible, il est probable que 
+deux sommets isolés soient voisins, d'où l'absurdité.
+
+\paragraph{}
+Il faudrait que l'on puisse transformer les chemins afin d'augmenter le
+nombre éventuel d'extrémités, vu que l'on ne peut travailler qu'à partir
+des extrémités: par exemple, si les deux extrémités d'un segment sont
+voisines i.e. s'il forme en fait un cycle, alors on peut choisir comme
+extrémité de notre chemin le sommet de notre choix. Afin de faire ceci,
+il nous faut une structure adaptée.
+
+\section{Le Dominating Cycle}
+
+\paragraph{}
+Soit $G$ un graphe, on définit le dominating cycle $C$ comme étant un 
+cycle de longueur maximale, et comme étant parmi ceux-ci un qui minimise 
+le nombre de composantes connexes de $G - C$.
+
+\paragraph{}
+Soit $C = c_{0} c_{1} ... c_{l-1} c_{0}$ le dominating cycle de $G$,
+supposons qu'au moins une composante connexe de $G - C$ soit réduite à un
+sommet v. Un théorème très visuel que nous avons démontré avec mon 
+maître de stage, sans savoir qu'il était déjà mentionné dans INSERER 
+LIEN sous le nom de «Hopping Lemma», est le suivant:
+
+\begin{lemma}
+Si on définit une suite $Y_{i}$ de sous-ensembles de sommets de G de la manière suivante:
+
+$Y_{0}= \{v \}$
+
+$Y_{i} = \{v_{j} | v_{j-1} et v_{j+1}$ voisins de $x, x \in Y_{i-1}\}$
+
+
+Si on pose $Y = \cup_{i=0}^{+ \infty} Y_{i} \cup G-C$, alors il n'y a aucune arête entre éléments de Y, et ils n'ont pas de voisins successifs sur C.
+\end{lemma}
+
+\begin{proof}
+La preuve complète est très visuelle, puisqu'elle consiste simplement à
+remarquer que $Y_{1}$ ne contient que des éléments que l'on peut 
+échanger avec $Y_{0} = \{v\}$, c'est à dire sortir du cycle. De même  on peut échanger les éléments de $Y_{2}$ avec $Y_{1}$, et donc les sortir 
+eux aussi, et ainsi de suite. Et comme évidemment, il n'y a pas d'arêtes
+entre élèments de $G-C$, et que les éléments de $G-C$ n'ont pas deux 
+voisins consécutifs sur $C$, on conclut.
+\end{proof}
+
+\paragraph{}
+Ce lemme nous permet de démontrer directement notre résultat principal:
+\begin{theorem}
+Soit $G$ un graphe $k$-régulier à $n$ sommets, avec $k \geq \frac{n}{3}$,
+alors $\mu(G)\leq \frac{n}{k+1}$
+\end{theorem}
+\begin{proof}
+Comme expliqué plus haut, on peut supposer $G$ connexe, quitte à 
+raisonner par récurrence sur le nombre de composantes connexes.
+
+\paragraph{}
+Pour rappel, on dit qu'un graphe est $c$-connexe, si quels que soient les
+$c$ sommets 
+\paragraph{}
+Il y a alors deux cas de figure possibles, selon que $G$ est 2-connexe
+ou pas.
+
+\paragraph{}
+Si $G$ est 2-connexe, Bill Jackson démontre dans INSERER SOURCE que $G$ 
+est hamiltonien (en utilisant le Hopping Lemma).
+
+
+\paragraph{}
+Sinon, si $G$ n'est pas 2-connexe, il existe un sommet, que nous noterons
+$v_{critical}$ dont la disparition a pour résultat d'éclater $G$ en $c$ 
+composantes connexes $C_{1}, C_{2}, ..., C_{c}$. On remarque que quel 
+que soit $i$, $|\{v_{critical}\} \cup C_{i}| \geq k = 1+frac{n}{3}$, car si on considère $v_{i} \in C_{i}$, $v_{i}$ a tous ses voisins dans $|\{v_{critical}\} \cup C_{i}|$. Or n = $v_{critical} + C_{1} + ... + C_{c} = 
+1 + \frac{cn}{3}$ ce qui entraîne $c \leq 2$. Et comme $G$ n'est pas 2-connexe, $c = 2$.
+
+
+\paragraph{}
+Donc il existe un sommet $v_{critical}$ dont la disparition entraîne
+l'apparition de deux uniques composantes connexes $C_{1}$ et $C_{2}$.
+Or $|C_{1}| \geq \frac{n}{3}$, donc $|C_{2}| < \frac{2n}{3}$. De la même
+manière $|C_{1}| < \frac{2n}{3}$. On aimerait alors conclure en 
+appliquant le théorème de Dirac à $C_{1} \cup \{v_{critical}\}$, en remarquant que $k \geq \frac{|C_{1} \cup \{v_{critical}\}|}{2}$. 
+Malheureusement, on ne peut pas, vu que $v_{critical}$ envoie une partie
+de son degré dans $C_{2}$. Il suffit simplement d'appliquer le théorème
+de Posa, qui est une version généralisée du théorème de Dirac, et qui 
+peut s'appliquer ici.
+
+
+\paragraph{}
+Et donc, $C_{1} \cup \{v_{critical}\}$ et $C_{2} \cup \{v_{critical}\}$ 
+admettent chacun un cycle hamiltonien. En supprimant dans les deux une
+arête adjacente à $v_{critical}$ et en les fusionant, on trouve donc un 
+chemin hamiltonien de $G$.
+\end{proof}
+
+\paragraph{}
+On remarque d'ailleurs qu'on a prouvé bien mieux, puisqu'on a démontré que tout graphe connexe à $n$ noeuds. 
+
+\part{Conclusion}
+\paragraph{}
+Au final, je n'ai pas réussi à résoudre le problème, mais je suis quand même satisfait des résultats trouvés, même s'il y a une sensation 
+d'inachevé. En effet, nous avons passé les deux premières semaines à 
+nous engoufrer dans des impasses stériles (les lollipops, les 
+décompositions en anse, découper le graphe pour trouver une relation de récurrence etc...), et je serais bien resté quelques semaines de plus à 
+approfondir dans cette direction.
+
+
+\paragraph{}
+En particulier, on remarque dans notre théorème final que l'on pourrait 
+surement pousser jusqu'à $k \geq \frac{n}{4}$. En effet, le cas de figure
+ «connexe mais pas 2-connexe» se résout de la même manière. Reste alors 
+le cas «2-connexe», que l'on résolvait avec le théorème de Bill Jackson.
+Si on regarde la démonstration de ce théorème, on se rend compte que 
+Bill Jackson démontre dans un premier temps que si $k \geq \frac{n}{3}$, et $C$ est un dominating cycle, alors $G-C$ ne possède que des composantes réduites à un sommet. 
+
+\paragraph{}
+Pourtant, dans le reste de sa démonstration, il a besoin d'un résultat beaucoup moins fort, qui est
+que $G-C$ possède au moins une composante connexe réduite à un sommet, ce
+qui pourrait peut-être être possible même si on a seulement $k \geq \frac{n}{4}$.
+
+\paragraph{}
+De plus, il se pourrait que la conjecture soit encore vraie si on la 
+généralise aux graphes quelconques (i.e. pas forcément régulier) et 
+qu'on appelle $k$ le degré minimal de $G$, mais ça me semble hors 
+d'atteinte, sachant que nous n'avons même pas pu démontré $\mu(G)=O(\frac{n}{k})$.
+
+\part{Bibliographie}
+\begin{thebibliography}{}
+    \bibitem[1] {MagnantMartin} C. \textsc {Magnant}, D. M. \textsc{Martin}. \emph{A note on the path cover number of regular graphs}. Australasian Journal of Combinatorics 43, 211-217 (2009)
+
+\bibitem[2] {FeigeRaviSingh} U. \textsc {Feige}, R. \textsc{Ravi}, M. \textsc{Singh}, \emph{Short Tours through large Linear Forests}. Springer International Publishing Switzerland, 273-284 (2014) 
+\end{thebibliography}
+
 \end{document}
