@@ -2,6 +2,7 @@
 \documentclass[a4paper]{article}
 
 
+\usepackage[francais]{babel}
 %%% ENCODAGE ET LANGUES %%%
 % Encodage de l'entrée.
 \usepackage[utf8]{inputenc}
@@ -39,51 +40,56 @@
 
 
 \title{Majoration de la taille minimale d'une décomposition d'un graphe régulier}
-\author{AUBIAN Guillaume}
+\author{Guillaume \textsc{Aubian}}
 
 \begin{document}
 
 \maketitle
 
+
+
 \begin{abstract}
 Voici le rapport de mon stage effectué à l'École Normale Supérieure de Lyon sous la direction de
 Stéphan Thomassé. L'objectif de ce stage était de majorer la taille
-de la décomposition minimale d'un graphe k-régulier en chemins disjoints.
+d'une décomposition minimale d'un graphe k-régulier en chemins disjoints.
 \end{abstract}
 
-\part{Préambule}
+\tableofcontents
+
+\newpage
+
+\section{Préambule}
 
 \paragraph{}
 
-\section{Encadrement au LIP}
+\subsection{Le LIP}
 Il s'agit du Laboratoire de l'Informatique du Parallélisme, situé au centre de Lyon. C'est le laboratoire d'informatique de l'École Normale 
 Supérieure de Lyon, et la plupart des chercheurs y enseignent. J'étais dans l'équipe MC2 - pour Modèles de calcul, Complexité, Combinatoire -
 qui s'intéresse à la théorie de la complexité, à 
-l'algorithmique sur les structures discrètes, et à la combinatoire de 
+l'algorithmique sur les structures discrètes et à la combinatoire de 
 manière générale.
 
 
 \paragraph{}
 Le chercheur qui m'a encadré était Stéphan Thomassé, dont le domaine
-de recherche est plutôt la théorie des graphes, même si j'ai aussi
-beaucoup travaillé et communiqué avec d'autres chercheurs ou doctorants 
+de recherche est plutôt axé sur la théorie des graphes, même si j'ai 
+aussi beaucoup travaillé et communiqué avec d'autres chercheurs ou doctorants 
 que je remercie chaleureusement, parmi lesquels Matthieu Rosenfeld, Aurélie Lagoutte et Éric Thierry.
 
 
-\section{Le problème étudié}
+\subsection{Le problème étudié}
 
 \paragraph{}
 Le problème que m'a proposé Stéphan Thomassé concerne donc la théorie 
-des graphes, et possède l'énorme avantage d'être très facile à 
-comprendre, ce qui m'a permis de m'y attaquer directement.
+des graphes, et possède l'énorme avantage d'être très facile d'accès, ce qui m'a permis de m'y attaquer directement.
 
 
 \paragraph{}
-Tout d'abord, nous allons donner quelques précisions, notamment sur le vocabulaire spécifique.
+Tout d'abord, nous allons donner quelques précisions, notamment sur le vocabulaire qui sera utilisé.
 
 
 \paragraph{}
-Déjà, nous ne nous intéresserons qu'à des graphes simples non-orientés, i.e. avec au plus une arête entre chaque paire de sommets et aucune arête
+Nous ne nous intéresserons qu'à des graphes simples non-orientés i.e. avec au plus une arête entre chaque paire de sommets et aucune arête
 d'un sommet vers lui-même. Un tel graphe est dit $k$-régulier si tous ses
 sommets sont de degré $k$, i.e. ont $k$ voisins.
 
@@ -92,39 +98,37 @@ sommets sont de degré $k$, i.e. ont $k$ voisins.
 
 
 \paragraph{}
-Pour un tel graphe $G$, on nomme décomposition en chemins disjoints de $G$  un ensemble $C$ de chemins de G tel que l'ensemble des sommets des chemins 
-de $C$ partitionne l'ensemble des sommets de G. On note
+Pour un tel graphe $G$, on nomme décomposition en chemins disjoints de $G$  un ensemble $C$ de chemins disjoints de $G$ tel que l'ensemble des sommets des chemins 
+de $C$ recouvre l'ensemble des sommets de $G$. On note
 
 
-$\mu$($G$)=$min$\{$|C|$, $C$ est une décomposition en chemins disjoints de G\}.
+$\mu$($G$)=$min$\{$|C|$, $C$ est une décomposition en chemins disjoints de $G$\}.
 
-\includegraphics{graphExample4.png}
+\includegraphics{graphExample10.png}
 
+\paragraph{}
+Enfin, un «tour» dans un graphe est un chemin qui parcourt tous les sommets
+du graphe au moins une fois, et revient à son point de départ. Trouver
+un «tour» de taille minimale est un problème NP-complet, puisque cela implique de trouver un cycle hamiltonien dans le cas des graphes qui en admettent un, et on se contente donc d'approximations, la meilleure étant en $(1+O(1))n$ à l'heure actuelle.
 
 \paragraph{}
 La conjecture à démontrer est la suivante:
 \begin{conjecture}
-Si G est un graphe k-régulier à n sommets, $\mu(G) \leq \frac{n}{k+1}$
+Si $G$ est un graphe k-régulier à n sommets, $\mu(G) \leq \frac{n}{k+1}$
 \end{conjecture}
-C'est Magnant et Martin qui semblent l'avoir établie, en 2009 dans \cite{MagnantMartin}.
+C'est Magnant et Martin qui l'ont établie, en 2009 dans \cite{MagnantMartin}.
 
 
 \paragraph{}
 En 2014, dans \cite{FeigeRaviSingh}, R. Ravi a trouvé un algorithme qui calcule en temps polynomial un «tour» d'un graphe $G$ avec une longueur de seulement $(1 + O
-(\frac{1}{k}))n$, dans le cas des graphes k-réguliers, à condition que cette 
-conjecture soit vérifiée.
-
-
-\paragraph{}
-Un «tour» dans un graphe est un chemin qui parcourt tous les sommets
-du graphe au moins une fois, et revient à son point de départ. Trouver
-un «tour» de taille minimale est un problème NP-complet, puisque cela implique de trouver un cycle hamiltonien dans le cas des graphes qui en admettent un, et c'est pour cela que l'on se contente d'approximations.
+(\frac{1}{k}))n$, dans le cas des graphes k-réguliers, à condition que 
+notre conjecture soit vérifiée.
 
 
 \paragraph{}
 Quelques semaines avant le début de mon stage, Paul Seymour a fait
 remarquer en conférence que dans le cas de graphes denses - typiquement 
-$k = \epsilon n$ - cela donnait une $1 + O(\frac{1}{\epsilon n})$-approximation, et que ça semblait du coup être un premier angle d'attaque 
+$k = \epsilon n$ - cela donnait une $1 + O(\frac{1}{\epsilon n})$-approximation, et que ça semblait donc être un angle d'attaque 
 intéressant. Mon maitre de stage s'étant alors rendu compte que le 
 problème était beaucoup plus difficile que prévu et que c'était le plus 
 intéressant, nous avons décidé de nous attaquer en priorité aux
@@ -136,11 +140,13 @@ abouti, mais pourraient être approfondies.
 
 
 \paragraph{}
-Il faut aussi noter que l'on démontre quand même le résultat de Ravi si on montre uniquement $\mu(G)=O(\frac{n}{k})$.
+Il faut aussi noter que l'on démontre quand même le résultat de Ravi si on montre seulement $\mu(G)=O(\frac{n}{k})$.
 
-\part{Les résultats obtenus}
+\newpage
 
-\section{Les résultats directs}
+\section{Les résultats obtenus}
+
+\subsection{Les résultats directs}
 
 \paragraph{}
 Tout d'abord, on peut énoncer un certain nombre de résultats directs.
@@ -149,12 +155,11 @@ Tout d'abord, on peut énoncer un certain nombre de résultats directs.
 \paragraph{}
 Dans un premier temps, on peut remarquer que la conjecture est immédiate si G admet un chemin hamiltonien: en effet, on a alors $\mu(G)=1$, ce qui vérifie forcément la conjecture vu que $k+1 \leq n$.
 
-
 \paragraph{}
 Or d'après le théorème de Dirac:
 \begin{theorem}
-Si le degré minimal d'un graphe G à n noeuds est supérieur ou égal à
-$\frac{n}{2}$, alors G est hamiltonien
+Si le degré minimal d'un graphe $G$ à $n$ noeuds est supérieur ou égal à
+$\frac{n}{2}$, alors $G$ est hamiltonien
 \end{theorem}
 
 
@@ -163,7 +168,7 @@ conjecture est vérifiée sur les graphes complets ( vu que $k = n-1 \geq \frac{
 
 
 \paragraph{}
-De plus, il est important de voir qu'on peut se limiter aux graphes connexes. En effet, supposons qu'on puisse partager un graphe G en deux composantes
+De plus, il est important de voir qu'on peut se limiter aux graphes connexes. En effet, supposons qu'on puisse partager un graphe $G$ en deux composantes
 $G_{0}$ et $G_{1}$ telles qu'il n'y ait aucune arête entre $G_{0}$ et $G_{1}$. On remarque que tout chemin de G est soit dans $G_{0}$, soit dans $G_{1}$.
 Donc $\mu(G) \leq \mu(G_{0}) + \mu(G_{1})$. On a donc notre relation de
 récurrence, et il suffit de résoudre le cas initial, qui est celui des graphes connexes.
@@ -174,29 +179,29 @@ En s'inspirant de ceci, il est évident que la conjecture est «sharp», puisqu'
 hamiltonien d'après le théorème de Dirac, et donc $\mu(G)=\frac{n}{k+1}$.
 
 
-\includegraphics{graphExample5.png}
+\includegraphics{graphExample11.png}
 
 
 \paragraph{}
-Que se passe-t'il pour des petites valeurs de k? On se restreint comme décrit plus haut à des graphes connexes.
+Que se passe-t'il pour des petites valeurs de $k$? On se restreint comme décrit plus haut à des graphes connexes.
 
 
 \paragraph{}
-Si k=0, alors le graphe est réduit à un sommet i.e $\mu(G)=1=\frac{1}{0+1}=\frac{n}{k+1}$
+Si $k=0$, alors le graphe est réduit à un sommet i.e $\mu(G)=1=\frac{1}{0+1}=\frac{n}{k+1}$
 
 
 \paragraph{}
-Si k=1, le graphe n'est constitué que de deux sommets reliés par une arête, et donc possède un chemin hamiltonien i.e. $\mu(G)=\frac{2}{1+1}=\frac{n}{k+1}$.
+Si $k=1$, le graphe n'est constitué que de deux sommets reliés par une arête, et donc possède un chemin hamiltonien i.e. $\mu(G)=\frac{2}{1+1}=\frac{n}{k+1}$.
 
 
 \paragraph{}
-Si k=2, G est réduit à un cycle i.e. $\mu(G)=1 \leq \frac{n}{3}$ car $n \geq k+1 = 3$.
+Si $k=2$, $G$ est réduit à un cycle i.e. $\mu(G)=1 \leq \frac{n}{3}$ car $n \geq k+1 = 3$.
 
 
 \paragraph{}
 Il y a aussi des preuves pour k=3, 4 et 5 dans \cite{MagnantMartin} mais on les redémontre facilement avec notre méthode du maximum lexicographique.
 
-\section{La méthode de l'arbre couvrant}
+\subsection{La méthode de l'arbre couvrant}
 
 \paragraph{}
 Nous avons tout d'abord découvert deux théorèmes qui nous semblaient prometteurs pour la suite.
@@ -209,16 +214,16 @@ Soit $ST$ un arbre couvrant d'un graphe connexe G, alors $\mu(G) \leq nb_{leaves
 
 \begin{proof}
 Il est évident que $\mu(G) \leq \mu(ST)$, vu qu'un chemin de $ST$ est un
-chemin de G.
+chemin de $G$.
 
 \paragraph{}
 On va alors noter $PW(T)$ l'ensemble des chemins pointés d'un arbre $T$ que l'on définit par récurrence de la manière ainsi:
 
 \paragraph{}
-Si T est réduit à un sommet $r$ (qui est aussi sa racine), et en notant c le chemin réduit à $r$, $PW(T) = \{c\}$. On remarque que la racine de T (qui n'est autre que $r$), est à l'extrémité d'un chemin de $PW(T)$.
+Si $T$ est réduit à un sommet $r$ (qui est aussi sa racine), et en notant $c$ le chemin réduit à $r$, $PW(T) = \{c\}$. On remarque que la racine de $T$ (qui n'est autre que $r$), est à l'extrémité d'un chemin de $PW(T)$.
 
 \paragraph{}
-Sinon, si T est réduit à une racine $r$ avec $s$ fils $T_{1}, T_{2} ... T_{s}$. On choisit $c$ le chemin de $PW(T_{1})$ tel que la racine de $T_{1}$ est à l'extrémité de $c$. On définit alors $PW(T)$ comme étant l'union des $PW(T_{i})$ (pour $i$ allant de $1$ à $s$), si ce n'est qu'on rajoute $r$ à l'extrémité de $c$. On remarque alors qu'un des chemins de $PW(T)$ a pour extrémité la racine de $T$.
+Sinon, si $T$ est réduit à une racine $r$ avec $s$ fils $T_{1}, T_{2} ... T_{s}$. On choisit $c$ le chemin de $PW(T_{1})$ tel que la racine de $T_{1}$ est à l'extrémité de $c$. On définit alors $PW(T)$ comme étant l'union des $PW(T_{i})$ (pour $i$ allant de $1$ à $s$), si ce n'est qu'on rajoute $r$ à l'extrémité de $c$. On remarque alors qu'un des chemins de $PW(T)$ a pour extrémité la racine de $T$.
 
 \paragraph{}
 On démontre facilement par induction structurelle que $|PW(T)|= nb_{leaves}(T)$.
@@ -234,12 +239,12 @@ Donc $\mu(G) \leq \mu(ST) \leq |PW(T)| = nb_{leaves}(T)$
 
 
 \paragraph{}
-On aimerait alors pouvoir démontrer qu'un graphe k-régulier à n noeuds $G$ admet toujours $O(\frac{n}{k})$ feuilles. Et le théorème 2 nous
+On aimerait alors pouvoir démontrer qu'un graphe $k$-régulier à $n$ noeuds $G$ admet toujours $O(\frac{n}{k})$ feuilles. Et le théorème 2 nous
 permet de montrer que si notre conjecture est vraie, c'est le cas:
 \begin{theorem}
 Soit $G$ un graphe connexe, alors:
 
-$\exists ST$ un arbre couvrant de G, $nb_{leaves}(ST)\leq 2\mu(G)$.
+$\exists ST$ un arbre couvrant de $G$, $nb_{leaves}(ST)\leq 2\mu(G)$.
 \end{theorem}
 
 \begin{proof}
@@ -265,7 +270,7 @@ Il est à noter que ceci ne se restreint pas qu'aux graphes réguliers.
 
 \paragraph{}
 On doit alors démontrer que les graphes k-réguliers à n noeuds admettent
-un arbre couvrant à $O(n/k)$ feuilles. On peut partir d'un arbre
+un arbre couvrant à $O(\frac{n}{k})$ feuilles. On peut partir d'un arbre
 couvrant avec un nombre minimal de feuilles, et montrer qu'il a forcément moins de $\frac{n}{k+1}$ feuilles, par exemple par l'absurde 
 avec l'aide du théorème suivant.
 
@@ -286,10 +291,10 @@ l'argument de minimalité.
 \end{proof}
 
 \paragraph{}
-Dans la pratique, nous ne sommes pas arrivé à conclure malgré ce théorème. Néanmoins, on aimerait bien garder une structure qui permette
+Dans la pratique, nous ne sommes pas arrivés à conclure malgré ce théorème. Néanmoins, on aimerait bien garder une structure qui permette
 de conclure avec un théorème semblable.
 
-\section{La méthode du maximum lexicographique}
+\subsection{La méthode du maximum lexicographique}
 
 \paragraph{}
 C'est le cas avec cet angle d'attaque: ici, on considère une partition minimale de $G$ en chemins disjoints $W = \{w_{1};w_{2};...;w_{\mu(G)}\}$ (on demande donc que $|W|$ soit minimal), qui soit un maximum 
@@ -320,7 +325,10 @@ sur la figure suivante:
 \paragraph{}
 Une autre conséquence est que si une extrémité $x$ de $w_{i}$ a un voisin sur $w_{j}$ pour $i \neq j$, alors $|w_{j}| \geq 2|w_{i}|$. On 
 voudrait alors faire une chaîne $w_{i_{0}} \rightarrow w_{i_{1}} \rightarrow w_{i_{2}} \rightarrow ...$ tel que chaque élément soit deux 
-fois plus grand que le précédent. Malheureusement, le cas de figure 
+fois plus grand que le précédent, d'autant qu'on démontre facilement un théorème, semblable à celui sur les arbres, qui nous garantit que si il y a plus de $\frac{n}{k+1}$ chemins, l'un d'entre eux a ses extrémités qui ont chacune au moins un voisin à l'extérieur de ce chemin.
+
+\paragraph{}
+Même si on arrive à quelques résultats, par exemple on peut prouver que le plus grand chemin est au moins 8 fois plus long que le plus petit, le cas de figure 
 suivant semble être une barrière infranchissable:
 
 \includegraphics{graphExample8.png}
@@ -344,28 +352,28 @@ voisines i.e. s'il forme en fait un cycle, alors on peut choisir comme
 extrémité de notre chemin le sommet de notre choix. Afin de faire ceci,
 il nous faut une structure adaptée.
 
-\section{Le Dominating Cycle}
+\subsection{Le Dominating Cycle}
 
 \paragraph{}
-Soit $G$ un graphe, on définit le dominating cycle $C$ comme étant un 
+Soit $G$ un graphe, on définit le dominating cycle $C$ de ce graphe comme étant un 
 cycle de longueur maximale, et comme étant parmi ceux-ci un qui minimise 
 le nombre de composantes connexes de $G - C$.
 
 \paragraph{}
 Soit $C = c_{0} c_{1} ... c_{l-1} c_{0}$ un dominating cycle de $G$,
 supposons qu'au moins une composante connexe de $G - C$ soit réduite à un
-sommet v. Un théorème très visuel que nous avons démontré avec mon 
+sommet $v$. Un théorème très visuel que nous avons démontré avec mon 
 maître de stage, sans savoir qu'il était déjà mentionné dans \cite{Woodall} sous le nom de «Hopping Lemma», est le suivant:
 
 \begin{lemma}
-Si on définit une suite $Y_{i}$ de sous-ensembles de sommets de G de la manière suivante:
+On définit une suite $Y_{i}$ de sous-ensembles de sommets de G de la manière suivante:
 
 $Y_{0}= \{v \}$
 
 $Y_{i} = \{v_{j} | v_{j-1} et v_{j+1}$ voisins de $x, x \in Y_{i-1}\}$
 
 
-Si on pose $Y = \cup_{i=0}^{+ \infty} Y_{i} \cup G-C$, alors il n'y a aucune arête entre éléments de Y, et ils n'ont pas de voisins successifs sur C.
+Si on pose $Y = \cup_{i=0}^{+ \infty} Y_{i} \cup G-C$, alors il n'y a aucune arête entre éléments de Y, et ils n'ont pas de voisins successifs sur $C$.
 \end{lemma}
 
 \begin{proof}
@@ -378,7 +386,7 @@ voisins consécutifs sur $C$, on conclut.
 \end{proof}
 
 \paragraph{}
-J'ai dans un premier temps essayer d'utiliser des versions affaiblies du Hopping Lemma pour chercher des «patterns interdits». Par exemple, on ne peut pas avoir ceci:
+J'ai dans un premier temps essayé d'utiliser des versions affaiblies du Hopping Lemma pour chercher des «patterns interdits». Par exemple, on ne peut pas avoir ceci:
 
 
 \includegraphics{graphExample9.png}
@@ -390,7 +398,7 @@ suffirait alors de supprimer les arêtes vertes pour obtenir un cycle strictemen
 \paragraph{}
 Ceci nous a ainsi permis de démontrer que:
 
-$\forall \epsilon > 0, \exists N, \forall n > N, \forall k \geq \frac{n}{2} - \epsilon$ la conjecture est démontrée pour k et n
+$\forall \epsilon > 0, \exists N, \forall n > N, \forall k \geq \frac{n}{2} - \epsilon$ la conjecture est démontrée pour $k$ et $n$
 
 \paragraph{}
 Néanmoins, le hopping lemma permet surtout de démontrer notre résultat principal:
@@ -442,6 +450,17 @@ de son degré dans $C_{2}$. Il suffit simplement d'appliquer le théorème
 de Posa, qui est une version généralisée du théorème de Dirac, et qui 
 peut s'appliquer ici.
 
+\begin{theorem}
+Soit $G$ un graphe simple à $n$ sommets tel que:
+\begin{itemize}
+\item $\forall k, 1 \leq k < \frac{n-1}{2}$, le nombre de sommets de degré inférieur ou égal à $k$ est strictement inférieur à $k$
+\item le nombre de sommets de degré inférieur ou égal à $\frac{n-1}{2}$ est inférieur ou égal à $\frac{n-1}{2}$
+\end{itemize}
+Alors $G$ est hamiltonien.
+\end{theorem}
+Comme $v_{critical}$ est le seul sommet de degré inférieur à $\frac{n-1}{2}$, on peut effectivement utiliser le théorème de Posa.
+
+
 
 \paragraph{}
 Et donc, $C_{1} \cup \{v_{critical}\}$ et $C_{2} \cup \{v_{critical}\}$ 
@@ -451,15 +470,17 @@ chemin hamiltonien de $G$.
 \end{proof}
 
 \paragraph{}
-On remarque d'ailleurs qu'on a prouvé bien mieux, puisqu'on a démontré que tout graphe connexe et $k$-régulier avec moins de $3k$ sommets admet un chemin hamiltonien. 
+On remarque de plus  qu'on a prouvé bien mieux, puisqu'on a démontré que tout graphe connexe et $k$-régulier avec moins de $3k$ sommets admet un chemin hamiltonien. 
 
-\part{Conclusion}
+
+\newpage
+\section{Conclusion}
 \paragraph{}
 Au final, je n'ai pas réussi à résoudre le problème, mais je suis quand même satisfait des résultats trouvés, même s'il y a une sensation 
 d'inachevé. En effet, nous avons passé les deux premières semaines à 
 nous engouffrer dans des impasses stériles (les lollipops, les 
 décompositions en anse, découper le graphe pour trouver une relation de récurrence etc...), et je serais bien resté quelques semaines de plus à 
-approfondir dans la direction fo,ame.
+approfondir dans la direction finale.
 
 
 \paragraph{}
@@ -468,20 +489,23 @@ surement pousser jusqu'à $k \geq \frac{n}{4}$. En effet, le cas
  «connexe mais pas 2-connexe» se résout de la même manière. Reste alors 
 le cas «2-connexe», que l'on résolvait avec le théorème de Bill Jackson.
 Si on regarde la démonstration de ce théorème, on se rend compte que 
-Bill Jackson démontre dans un premier temps que si $k \geq \frac{n}{3}$, et $C$ est un dominating cycle, alors $G-C$ ne possède que des composantes réduites à un sommet. 
+Bill Jackson démontre dans un premier temps que si $k \geq \frac{n}{3}$, et $C$ est un dominating cycle, alors $G-C$ n'est composé que de composantes réduites à un sommet. 
 
 \paragraph{}
-Pourtant, dans le reste de sa démonstration, il a besoin d'un résultat beaucoup moins fort, qui est
-que $G-C$ possède au moins une composante connexe réduite à un sommet, ce
-qui pourrait peut-être être possible même si on a seulement $k \geq \frac{n}{4}$.
+Pourtant, dans le reste de sa démonstration, on a besoin d'un résultat beaucoup moins fort, qui est
+que $G-C$ possède \emph{au moins} une composante connexe réduite à un sommet, ce
+qui pourrait être toujours le cas lorsque $k \geq \frac{n}{4}$.
 
 \paragraph{}
 De plus, il se pourrait que la conjecture soit encore vraie si on la 
 généralise aux graphes quelconques (i.e. pas forcément régulier) et 
-qu'on appelle $k$ le degré minimal de $G$, mais ça me semble hors 
+qu'on appelle $k$ le degré minimal de $G$, mais cela me semble hors 
 d'atteinte, sachant que nous n'avons même pas pu démontré $\mu(G)=O(\frac{n}{k})$.
 
-\part{Bibliographie}
+
+\newpage
+
+\section{Bibliographie}
 \begin{thebibliography}{}
     \bibitem[1] {MagnantMartin} C. \textsc {Magnant}, D. M. \textsc{Martin}. \emph{A note on the path cover number of regular graphs}. Australasian Journal of Combinatorics 43, 211-217 (2009)
 
@@ -492,5 +516,6 @@ d'atteinte, sachant que nous n'avons même pas pu démontré $\mu(G)=O(\frac{n}{
 \bibitem[4] {Jackson} B. \textsc {Jackson}, \emph{Hamilton cycles in regular 2-connected graphs}. J. Combinatorial Theory Ser. B (1978)
 
 \end{thebibliography}
+
 
 \end{document}
