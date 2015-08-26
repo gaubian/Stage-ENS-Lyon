@@ -1,0 +1,113 @@
+
+\documentclass{article}
+
+\usepackage[francais]{babel} %
+\usepackage[T1]{fontenc} %
+\usepackage[latin1]{inputenc} %
+\usepackage{a4wide} %
+\usepackage{palatino} %
+
+\let\bfseriesbis=\bfseries \def\bfseries{\sffamily\bfseriesbis}
+
+
+\newenvironment{point}[1]%
+{\subsection*{#1}}%
+{}
+
+\setlength{\parskip}{0.3\baselineskip}
+
+\begin{document}
+
+\title{Majoration de la taille d'une décomposition minimale d'un graphe régulier}
+
+\author{Guillaume \textsc{Aubian}, Stéphan \textsc{Thomassé}, Laboratoire de l'Informatique du Parallélisme (LIP)}
+
+
+\maketitle
+
+\pagestyle{empty} %
+\thispagestyle{empty}
+
+%% Attention: pas plus d'un recto-verso!
+
+
+\begin{point}{Le contexte général}
+  
+\paragraph{}
+Le problème du «Minimum Tour» est connu pour être NP-complet, même si on
+le restreint aux graphes $k$-réguliers, et l'on ne connaît donc aucun 
+algorithme polynomial pour le résoudre.
+
+\paragraph{}
+Tout récemment, en 2014, R. Ravi a trouvé un algorithme polynomial qui semble très bien approximer ce problème, puisqu'il donnerait une 
+approximation qui aurait une longueur de $(1 + O(\frac{1}{k}))n$.
+
+\paragraph{}
+Malheureusement, cette complexité alléchante repose sur la véracité d'une
+conjecture, elle aussi très récente puisqu'elle date de 2009, qui stipule
+que tout graphe $k$-régulier à $n$ noeuds peut être décomposé en $\frac{n}{k+1}$ chemins disjoints.
+
+\end{point}
+
+\begin{point}{Le problème étudié}
+ 
+\paragraph{}
+Comme l'algorithme de Ravi est surtout intéressant pour les graphes
+denses, j'ai essayé de résoudre cette conjecture pour de grandes valeurs de $k$.
+
+\paragraph{}
+En effet, on connaît déjà un algorithme qui donne un résultat de $(1+O(1))n$ pour un graphe connexe quelconque (comprendre par là: pas forcément régulier), il n'y a donc pas d'interêt de ce point de vue là à 
+s'intéresser aux cas «k = constante», même si à mon avis la conjecture est de toutes façons suffisament esthétique pour que l'on s'y attaque indépendamment de son utilité.
+
+\paragraph{}
+Le problème étant très récent, je n'ai eu absolument aucune piste toute
+tracée et ai pu tenter toutes les stratégies que je désirais, ce qui
+est évidemment plaisant. Ceci m'a de plus permis de trouver plein de
+résultats intermédiaires, même si le plus grand a été de le résoudre
+pour $k \geq \frac{n}{3}$, alors qu'il n'existait pas de borne meilleure que  $k \geq \frac{n}{2}$ jusque là.
+\end{point}
+
+\begin{point}{La contribution proposée}
+\paragraph{}
+Pendant les deux premières semaines, j'ai passé mon temps à m'embourber dans des stratégies stériles. Puis m'est venu l'idée de passer par les
+arbres couvrants. Cette structure étant trop «chaotique», en ce sens que plusieurs arbres peuvents représenter la même décompsition sans que cela ne saute aux yeux, j'ai décidé
+de trier les chemins par ordre lexicographique (en minimisant quand même en premier lieu le nombre de chemins). Malheureusement, la structure était cette fois trop rigide, et je suis donc passé aux «dominating cycles», deux semaines après les arbres couvrants.
+
+
+\paragraph{}
+J'ai ensuite passé mon temps à essayer de rechercher des patterns 
+interdits avec les «dominating cycles» ce qui était intéressant, mais malheureusement inutile. Puis nous est venu avec mon maitre de stage l'idée d'un théorème,  avant de nous rendre compte qu'il
+était déjà connu sous le nom de «Hopping Lemma». À partir de là,j'ai pu prouver que tous les graphes connexes de degré minimal k et avec au plus $3k$ noeuds admettent un chemin hamiltonien, ce qui entraine notre conjecture pour $k \geq \frac{n}{3}$.
+
+\end{point}
+
+\begin{point}{Les arguments en faveur de sa validité}
+\paragraph{}
+La démonstration étant purement mathématique, elle est évidemment valide.
+
+\paragraph{}
+Néanmoins, on peut s'intéresser à la validité de la conjecture. À vrai dire, on est vite convaincu de ce fait, quand on sait que la très grande
+majorité des graphes réguiers sont hamiltoniens, et quand on voit comment nos angles d'attaques semblaient échouer face à des cas de figures rarissimes.
+\end{point}
+
+
+\begin{point}{Le bilan et les perspectives}
+  
+
+\paragraph{}
+Je pense que l'on peut encore pousser mon approche, de manière à prouver
+la conjecture pour $k \geq \frac{n}{4}$, voire même encore moins! Néanmoins, elle me semble inapte à résoudre le problème de manière générale.
+
+\paragraph{}
+Après ça, on pourra essayer de voir si la conjecture est toujours vraie si on remplace $k$ par le degré minimal de $G$, et qu'on généralise le problème à $G$ non régulier. Nous avons étudié ceci afin de voir si cela pouvait permettre une résolution par récurrence, mais nous n'avons pas pu conclure.
+
+\paragraph{}
+Enfin, il semblerait que la conjecture ne soit clairement pas «sharp» pour $G$ connexe, et on peut imaginer trouver une borne bien inférieure dans ce cas de figure.
+\end{point}
+
+
+\end{document}
+
+
+
+
